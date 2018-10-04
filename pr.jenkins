@@ -49,3 +49,4 @@ multibranchPipelineJob('plm-product-api Pull Request') {
             }
        }
     }
+}
