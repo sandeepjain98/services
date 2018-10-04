@@ -3,12 +3,12 @@ multibranchPipelineJob('plm-product-api Pull Request') {
     description('Multibranch pipeline job for PLM_DATA_QUALITY Pull Request Job')
     branchSources {
         github  {
-            repoOwner('ProductLifecycleManagement')
-            repository('PLM_PRODUCT_API')
+            repoOwner('sandeepjainHSC')
+            repository('services')
             //NOTE  the user credential needs to be setup in the Jenkins credentials this is one time for all repos
-            checkoutCredentialsId('svc-uno-CICD')
-            scanCredentialsId('svc-uno-CICD')
-            apiUri('https://github.dev.global.tesco.org/api/v3')
+            checkoutCredentialsId('sandeepjainHSC')
+            scanCredentialsId('sandeepjainHSC')
+            apiUri('https://github.tesco.org/api/v3')
             buildForkPRHead(false)
             buildForkPRMerge(false)
             buildOriginBranch(false)
@@ -29,7 +29,7 @@ multibranchPipelineJob('plm-product-api Pull Request') {
     
     configure { folder ->
        folder  / 'factory' << {
-      scriptPath 'cicd/pipelines/uno_plmproductapi_test.jenkins'
+      scriptPath 'cicd/pipelines/test.jenkins'
     }
     }
 
@@ -49,4 +49,3 @@ multibranchPipelineJob('plm-product-api Pull Request') {
             }
        }
     }
-}
