@@ -1,0 +1,52 @@
+#!/usr/bin/env groovy
+multibranchPipelineJob('plm-product-api Pull Request') {
+    description('Multibranch pipeline job for PLM_DATA_QUALITY Pull Request Job')
+    branchSources {
+        github  {
+            repoOwner('ProductLifecycleManagement')
+            repository('PLM_PRODUCT_API')
+            //NOTE  the user credential needs to be setup in the Jenkins credentials this is one time for all repos
+            checkoutCredentialsId('svc-uno-CICD')
+            scanCredentialsId('svc-uno-CICD')
+            apiUri('https://github.dev.global.tesco.org/api/v3')
+            buildForkPRHead(false)
+            buildForkPRMerge(false)
+            buildOriginBranch(false)
+            buildOriginBranchWithPR(true)
+            buildOriginPRHead(false)
+            buildOriginPRMerge(true)
+        }
+    }
+    orphanedItemStrategy {
+        discardOldItems {
+            numToKeep(20)
+            daysToKeep(7)
+        }
+    }
+     triggers {
+        periodic(10)
+    }
+    
+    configure { folder ->
+       folder  / 'factory' << {
+      scriptPath 'cicd/pipelines/uno_plmproductapi_test.jenkins'
+    }
+    }
+
+    configure {     node ->
+       node  / sources / data / 'jenkins.branch.BranchSource' / source / traits << {
+                    'jenkins.plugins.git.traits.CleanAfterCheckoutTrait'() {
+                        extension(class: 'hudson.plugins.git.extensions.impl.CleanCheckout')            
+            }
+            'jenkins.plugins.git.traits.AuthorInChangelogTrait'(){
+                       extension(class: 'hudson.plugins.git.extensions.impl.AuthorInChangelog')
+            }
+            'org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait'(){
+            strategyId '2'
+            }
+            'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait'(){
+            strategyId '1'
+            }
+       }
+    }
+}
