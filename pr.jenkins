@@ -8,7 +8,6 @@ multibranchPipelineJob('plm-product-api Pull Request') {
             //NOTE  the user credential needs to be setup in the Jenkins credentials this is one time for all repos
             checkoutCredentialsId('sandeepjainHSC')
             scanCredentialsId('sandeepjainHSC')
-            apiUri('https://github.tesco.org/api/v3')
             buildForkPRHead(false)
             buildForkPRMerge(false)
             buildOriginBranch(false)
