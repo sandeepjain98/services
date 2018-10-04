@@ -1,0 +1,17 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 8082
+  adminConnectors:
+    - type: http
+      port: 8083
+
+baseProductType: "base"
+gtinProductType: "gtin"
+tempVariantProductType: "tempVariant"
+
+couchBaseProperties:
+   cluster: "localhost:8091"
+   username: product
+   password:  password
+   bucketname: products
